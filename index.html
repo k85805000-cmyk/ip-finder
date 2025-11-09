@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My IP Info</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    button {
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 25px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .info {
+      text-align: left;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .info p {
+      margin: 10px 0;
+      font-size: 1rem;
+      color: #fff;
+    }
+
+    .info span {
+      font-weight: 700;
+      color: #ffd700;
+    }
+
+    .loading {
+      font-style: italic;
+      color: #fffa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌐 My IP Info</h1>
+    <button onclick="getIPInfo()">Show My IP Info</button>
+    <div class="info" id="info"></div>
+  </div>
+
+  <script>
+    async function getIPInfo() {
+      const infoDiv = document.getElementById('info');
+      infoDiv.innerHTML = '<p class="loading">Loading your IP info...</p>';
+
+      try {
+        const response = await fetch('http://ip-api.com/json/');
+        const data = await response.json();
+
+        infoDiv.innerHTML = `
+          <p><span>IP Address:</span> ${data.query}</p>
+          <p><span>ISP:</span> ${data.isp}</p>
+          <p><span>Organization:</span> ${data.org}</p>
+          <p><span>City:</span> ${data.city}</p>
+          <p><span>Region:</span> ${data.regionName}</p>
+          <p><span>Country:</span> ${data.country}</p>
+          <p><span>ZIP:</span> ${data.zip}</p>
+          <p><span>Timezone:</span> ${data.timezone}</p>
+        `;
+      } catch (err) {
+        infoDiv.innerHTML = '<p>Could not fetch IP info. Try again later.</p>';
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
